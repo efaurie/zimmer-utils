@@ -23,7 +23,9 @@ def pdf_to_markdown_docling(pdf_path: Path, md_path: Path) -> str:
     """
     Parses layout, tables, reading order, and hierarchy of the PDF into structured Markdown.
     """
-    print(f"[*] Running Docling layout analysis and OCR extraction on: {pdf_path.resolve()}")
+    print(
+        f"[*] Running Docling layout analysis and OCR extraction on: {pdf_path.resolve()}"
+    )
     start_time = time.time()
 
     converter = DocumentConverter()
@@ -43,34 +45,35 @@ def main():
     parser = argparse.ArgumentParser(
         description="Convert PDF files to structured Markdown using Docling."
     )
+    parser.add_argument("pdf_file", type=Path, help="Path to the input .pdf file.")
     parser.add_argument(
-        "pdf_file",
-        type=Path,
-        help="Path to the input .pdf file."
-    )
-    parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         type=Path,
         default=None,
-        help="Output Markdown file path or directory (defaults to input file's directory and stem name)."
+        help="Output Markdown file path or directory (defaults to input file's directory and stem name).",
     )
     parser.add_argument(
-        "-d", "--output-dir",
+        "-d",
+        "--output-dir",
         type=Path,
         default=None,
-        help="Directory to save the output Markdown file."
+        help="Directory to save the output Markdown file.",
     )
     parser.add_argument(
         "--print-md",
         action="store_true",
-        help="Print the generated Markdown to stdout."
+        help="Print the generated Markdown to stdout.",
     )
 
     args = parser.parse_args()
 
     input_file = args.pdf_file.resolve()
     if not input_file.exists() or input_file.suffix.lower() != ".pdf":
-        print(f"Error: '{input_file}' does not exist or is not a .pdf file.", file=sys.stderr)
+        print(
+            f"Error: '{input_file}' does not exist or is not a .pdf file.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     # Determine destination Markdown path

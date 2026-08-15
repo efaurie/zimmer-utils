@@ -39,7 +39,7 @@ def pub_to_high_fidelity_pdf(pub_path: Path, pdf_path: Path) -> None:
     try:
         # Launch Office 365 Publisher in the background
         app = win32com.client.Dispatch("Publisher.Application")
-        
+
         abs_pub = str(pub_path.resolve())
         abs_pdf = str(pdf_path.resolve())
 
@@ -80,14 +80,14 @@ def pdf_to_markdown_docling(pdf_path: Path, md_path: Path) -> str:
 
     converter = DocumentConverter()
     result = converter.convert(str(pdf_path.resolve()))
-    
+
     # Export clean markdown representation
     markdown_content = result.document.export_to_markdown()
 
     md_path.write_text(markdown_content, encoding="utf-8")
     elapsed = time.time() - start_time
     print(f"[✓] Markdown saved to: {md_path.resolve()} ({elapsed:.2f}s)")
-    
+
     return markdown_content
 
 
@@ -95,28 +95,28 @@ def main():
     parser = argparse.ArgumentParser(
         description="Convert Microsoft Publisher (.pub) files to high-fidelity PDF and Markdown for LLMs."
     )
+    parser.add_argument("pub_file", type=Path, help="Path to the input .pub file.")
     parser.add_argument(
-        "pub_file",
-        type=Path,
-        help="Path to the input .pub file."
-    )
-    parser.add_argument(
-        "-o", "--output-dir",
+        "-o",
+        "--output-dir",
         type=Path,
         default=None,
-        help="Directory to save output files (defaults to input file's directory)."
+        help="Directory to save output files (defaults to input file's directory).",
     )
     parser.add_argument(
         "--print-md",
         action="store_true",
-        help="Print the generated Markdown to stdout."
+        help="Print the generated Markdown to stdout.",
     )
 
     args = parser.parse_args()
 
     input_file = args.pub_file.resolve()
     if not input_file.exists() or input_file.suffix.lower() != ".pub":
-        print(f"Error: '{input_file}' does not exist or is not a .pub file.", file=sys.stderr)
+        print(
+            f"Error: '{input_file}' does not exist or is not a .pub file.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     out_dir = args.output_dir.resolve() if args.output_dir else input_file.parent

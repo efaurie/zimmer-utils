@@ -73,29 +73,30 @@ def main():
     parser = argparse.ArgumentParser(
         description="Convert Microsoft Publisher (.pub) files to high-fidelity PDF."
     )
+    parser.add_argument("pub_file", type=Path, help="Path to the input .pub file.")
     parser.add_argument(
-        "pub_file",
-        type=Path,
-        help="Path to the input .pub file."
-    )
-    parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         type=Path,
         default=None,
-        help="Output PDF file path or directory (defaults to input file's directory and stem name)."
+        help="Output PDF file path or directory (defaults to input file's directory and stem name).",
     )
     parser.add_argument(
-        "-d", "--output-dir",
+        "-d",
+        "--output-dir",
         type=Path,
         default=None,
-        help="Directory to save the output PDF file."
+        help="Directory to save the output PDF file.",
     )
 
     args = parser.parse_args()
 
     input_file = args.pub_file.resolve()
     if not input_file.exists() or input_file.suffix.lower() != ".pub":
-        print(f"Error: '{input_file}' does not exist or is not a .pub file.", file=sys.stderr)
+        print(
+            f"Error: '{input_file}' does not exist or is not a .pub file.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     # Determine destination PDF path
